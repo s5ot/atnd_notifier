@@ -3,5 +3,5 @@
 例）
 ----
 # -*- coding: utf-8 -*-
-ADMIN_EMAIL = 'admin@gmail.com'
+ADMIN_EMAIL = 'atnd_notifier_admin@gmail.com'
 ----
