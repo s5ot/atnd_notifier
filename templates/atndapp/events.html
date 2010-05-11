@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}ATND Notifier | Events{% endblock %}
+
+{% block header %}
+<p>Signed in as {{user.nickname}} | <a href="{{ logout_url }}">Sign out</a>
+<hr/>
+{% endblock %}
+
+{% block contents %}
+<h1>Events</h1>
+<h2>キーワード: {{keyword}}</h2>
+<p>
+{% if token_request_url %}
+  <a href="{token_request_url}">Google Calendarへ登録できるようにする</a>
+{% else %}
+  Google Calendarへ登録できます
+{% endif %}
+</p>
+<table border="1">
+  <tr>
+    <th>タイトル</th>
+    <th>場所</th>
+    <th>開始日時</th>
+    <th>終了日時</th>
+    <th>Google Calendarに</th>
+  </tr>
+{% for event in events %}
+  <tr>
+    <td><a href="{{event.url}}">{{ event.title }}</a></td>
+    <td>{{ event.address }}</td>
+    <td>{{ event.started_at }}</td>
+    <td>{{ event.ended_at }}</td>
+    <td>
+      {% if not event.gcal_event_link %}
+        <a href="/google_calendar?key={{ event.key }}">登録しておく</a>
+      {% else %}
+        <a href="{{event.gcal_event_link}}">登録済み</a>
+      {% endif %}
+    </td>
+  </tr>
+{% endfor %}
+</table>
+<p>
+<a href="/top">Topにもどる</a>
+</p>
+{% endblock %}

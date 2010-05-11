@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}ATND Notifier | Top{% endblock %}
+
+{% block header %}
+<p>Signed in as {{user.nickname}} | <a href="{{ logout_url }}">Sign out</a>
+<hr/>
+{% endblock %}
+
+{% block contents %}
+<h1>Top</h1>
+{% if not keyword %}
+  <h2>
+  キーワードを設定してください
+  </h2>
+  <p>
+  <a href="/keyword">キーワードを設定する</a>
+  </p>
+{% else %}
+  <h2>設定中のキーワード: {{ keyword.keyword }}</h2>
+  <ul>
+    <li>
+    キーワードにマッチするイベントがみつかったら定期的にGmailでお知らせします
+    </li>
+    <li>
+      <a href="/keyword">キーワードを変更する</a>
+    </li>
+  </ul>
+  <h2>
+  これまでにみつかったイベント
+  </h2>
+  <ul>
+    {% for k,v in keyword_event_cnt %}
+      <li>{{ k }} </li>
+      {% if v %}
+      <ul>
+        <li><a href="/events?keyword={{k}}">{{ v }}件</a></li>
+      </ul>
+      {% else %}
+      <ul>
+        <li>{{ v }}件</li>
+      </ul>
+      {% endif %}
+    {% endfor %}
+    </li>
+  </ul>
+  <hr/>
+  <p>
+  <a href="/stop">利用をやめる</a>
+  </p>
+{% endif %}
+
+{% endblock %}

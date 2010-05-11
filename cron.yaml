@@ -1,0 +1,4 @@
+cron:
+- description: a hour search job
+  url: /search
+  schedule: every 1 hours
