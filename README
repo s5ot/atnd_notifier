@@ -1,0 +1,7 @@
+トップディレクトリ下にsettings_ext.pyというファイルを作ります
+メール送信元の管理者のアドレスをADMIN_EMAILという名前で設定します
+例）
+----
+# -*- coding: utf-8 -*-
+ADMIN_EMAIL = 'admin@gmail.com'
+----
