@@ -1,3 +1,10 @@
+====
+atnd_notifier
+====
+キーワードでATNDのイベントを定期的に探してGmailでお知らせするアプリです。
+利用するにはGoogle Accountにログインする必要があります。
+見つかったイベントをあとでGoogle Calendarに登録することができます。
+Google AppEngine(Python）で動作します
 
 == 必要な設定 ==
 トップディレクトリ下にsettings_ext.pyというファイルを作ります
