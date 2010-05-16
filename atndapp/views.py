@@ -18,6 +18,7 @@ import re
 import datetime
 import logging
 import settings_ext
+from google.appengine.api import memcache
 
 def index(request):
   return render_to_response('atndapp/index.html', {})
@@ -38,9 +39,37 @@ def top(request):
       event_cnt+=1
     keyword_event_cnt[keyword.keyword] = event_cnt
 
+  # Initialize a client to talk to Google Data API services.
+  calendar_client = gdata.service.GDataService()
+  gdata.alt.appengine.run_on_appengine(calendar_client)
+
+  # http://code.google.com/appengine/articles/more_google_data.html
+  token_request_url = None
+
+  # Find an AuthSub token in the current URL if we arrived at this page from
+  # an AuthSub redirect.
+  auth_token = gdata.auth.extract_auth_sub_token_from_url(request.get_full_path())
+  if auth_token:
+    calendar_client.SetAuthSubToken(
+        calendar_client.upgrade_to_session_token(auth_token))
+
+  # Check to see if the app has permission to write to the user's
+  # Google Calendar.
+  if not isinstance(calendar_client.token_store.find_token(
+          'http://www.google.com/calendar/feeds/'),
+          gdata.auth.AuthSubToken):
+      next_url = atom.url.Url('http', settings.HOST_NAME, path='/top')
+      token_request_url = calendar_client.GenerateAuthSubURL(
+          next_url,
+         ('http://www.google.com/calendar/feeds/'),
+          secure=False,
+          session=True)
+      return HttpResponseRedirect(token_request_url)
+
   return render_to_response('atndapp/top.html', {'user':user,
                                                   'keyword':current_keyword,
                                                   'keyword_event_cnt':keyword_event_cnt.iteritems(),
+                                                  'token_request_url':token_request_url,
                                                   'logout_url':users.create_logout_url('/'),
                                                   })
 @google_login_required
@@ -80,36 +109,20 @@ def keyword(request):
 def events(request):
   user = users.get_current_user()
 
-  keywords = db.GqlQuery("SELECT * FROM Keyword WHERE email = :1 AND keyword = :2", user.email(), request.GET['keyword'])
+  if request.GET.has_key('keyword'):
+    req_keyword = request.GET['keyword']
+    memcache.delete(user.email())
+  else:
+    req_keyword = memcache.get(user.email())
+
+  keywords = db.GqlQuery("SELECT * FROM Keyword WHERE email = :1 AND keyword = :2", user.email(), req_keyword)
   keyword = keywords.get()
   events = db.GqlQuery("SELECT * FROM Event WHERE keyword = :1 ORDER BY started_at DESC", keyword)
 
-  # Create a Google Calendar client to talk to the Google Calendar service.
-  calendar_client = gdata.calendar.service.CalendarService()
-  # Modify the client to search for auth tokens in the datastore and use
-  # urlfetch instead of httplib to make HTTP requests to Google Calendar.
-  gdata.alt.appengine.run_on_appengine(calendar_client)
-
-  token_request_url = None
-  next_url = atom.url.Url('http', settings.HOST_NAME, path='/events?key=%s' % request.GET['keyword'])
-  # Find an AuthSub token in the current URL if we arrived at this page from
-  # an AuthSub redirect.
-  auth_token = gdata.auth.extract_auth_sub_token_from_url(request.get_full_path())
-  if auth_token:
-    calendar_client.SetAuthSubToken(
-        calendar_client.upgrade_to_session_token(auth_token))
-
-  # Check to see if the app has permission to write to the user's
-  # Google Calendar.
-  if not isinstance(calendar_client.token_store.find_token(
-          'http://www.google.com/calendar/feeds/'),
-          gdata.auth.AuthSubToken):
-      token_request_url = gdata.auth.generate_auth_sub_url(self.request.uri,
-         ('http://www.google.com/calendar/feeds/default/',))
+  memcache.set(user.email(), req_keyword)
 
   return render_to_response('atndapp/events.html', {'events':events,
                                                     'user':user,
-                                                    'token_request_url':token_request_url,
                                                     'keyword':keyword.keyword,
                                                     'logout_url':users.create_logout_url('/'),
                                                       })
@@ -133,8 +146,6 @@ def stop(request):
 def google_calendar(request):
   user = users.get_current_user()
 
-  #events = db.GqlQuery("SELECT * FROM Event WHERE email = :1 AND key = :2", user.email(), db.Key(request.GET['key']))
-  #event = events.get()
   a = re.search(r'(.+)\?', request.GET['key'])
   if a:
     key = a.group(1)
@@ -184,7 +195,6 @@ def google_calendar(request):
 
   return HttpResponseRedirect('/top')
 
-
   # Check to see if the app has permission to write to the user's
   # Google Calendar.
   if not isinstance(calendar_client.token_store.find_token(
@@ -193,12 +203,28 @@ def google_calendar(request):
     token_request_url = gdata.auth.generate_auth_sub_url(next_url,
        ('http://www.google.com/calendar/feeds/default/',))
 
+
+@google_login_required
+def list(request):
+  events = []
+  if request.GET and request.GET.has_key('keyword'):
+    request_keyword = request.GET['keyword']
+    keyword = Keyword(keyword=request_keyword)
+    events = keyword.search()
+    logging.debug("events is %s" % events)
+
+  return render_to_response('atndapp/list.html',{'events':events})
+
+
 #cron action                                                       
-def search(request):
+def cron_search(request):
   keywords = db.GqlQuery("SELECT * FROM Keyword WHERE available = :1", True)
   for keyword in keywords:
-    bodies = keyword.search()
-    for body in bodies:
-      keyword.send_mail(keyword, body)
+    events = keyword.search()
+    for event in events:
+      keyword.send_mail(keyword, event)
 
-    return render_to_response('atndapp/search.html',{'bodies':bodies})
+    return render_to_response('atndapp/search.html',{'events':events})
+
+
+

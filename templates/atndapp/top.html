@@ -11,24 +11,24 @@
 <h1>Top</h1>
 {% if not keyword %}
   <h2>
-  キーワードを設定してください
+  キーワードにマッチするイベントがみつかったらGmailでお知らせします
   </h2>
   <p>
   <a href="/keyword">キーワードを設定する</a>
   </p>
 {% else %}
-  <h2>設定中のキーワード: {{ keyword.keyword }}</h2>
+  <h2>
+    ウォッチ中のキーワード: {{ keyword.keyword }}
+  </h2>
   <ul>
     <li>
-    キーワードにマッチするイベントがみつかったら定期的にGmailでお知らせします
+      <strong>{{ keyword.keyword }}</strong>にマッチするイベントがみつかったらGmailでお知らせします
     </li>
     <li>
       <a href="/keyword">キーワードを変更する</a>
     </li>
   </ul>
-  <h2>
-  これまでにみつかったイベント
-  </h2>
+  <h3>これまでにみつかったイベント</h3>
   <ul>
     {% for k,v in keyword_event_cnt %}
       <li>{{ k }} </li>
@@ -44,7 +44,25 @@
     {% endfor %}
     </li>
   </ul>
-  <hr/>
+<!--
+  <h2>いますぐイベントをさがす</h2>
+  <ul>
+    <li><a href="/list">さがす</a></li>
+  </ul>
+-->
+<!--
+<h3>Google Calendarとの連携</h3>
+<ul>
+  <li>
+{% if token_request_url %}
+  <a href="{{token_request_url}}">許可する</a>
+{% else %}
+  許可中
+{% endif %}
+</li>
+</ul>
+-->
+<hr/>
   <p>
   <a href="/stop">利用をやめる</a>
   </p>

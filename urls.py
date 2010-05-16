@@ -12,7 +12,8 @@ urlpatterns = patterns('',
      (r'^stop$', 'atndapp.views.stop'),
      (r'^events$', 'atndapp.views.events'),
      (r'^google_calendar$', 'atndapp.views.google_calendar'),
-     (r'^search$', 'atndapp.views.search'),
+     (r'^list$', 'atndapp.views.list'),
+     (r'^cron_search$', 'atndapp.views.cron_search'),
 
     # Example:
     # (r'^atndproject/', include('atndproject.foo.urls')),

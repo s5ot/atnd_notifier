@@ -1,2 +1,3 @@
 settings_ext.py
-*.pyc
+*/**/*.pyc
+app.yaml

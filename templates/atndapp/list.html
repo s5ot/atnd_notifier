@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}ATND Notifier | List{% endblock %}
+{% block header %}
+<p>Signed in as {{user.nickname}} | <a href="{{ logout_url }}">Sign out</a>
+<hr/>
+{% endblock %}
+
+{% block contents %}
+<h1>List</h1>
+<form action="/list" method="get">
+  <p>
+  <input type="text" size="25" name="keyword">
+  </p>
+  <input type="submit" value="search" />
+</form>
+
+<table border="1">
+    <th>タイトル</th>
+    <th>場所</th>
+    <th>開始日時</th>
+    <th>終了日時</th>
+{% for event in events %}
+  <tr>
+    <td><a href="{{event.url}}">{{ event.title }}</a></td>
+    <td>{{ event.address }}</td>
+    <td>{{ event.started_at }}</td>
+    <td>{{ event.ended_at }}</td>
+  </tr>
+{% endfor %}
+</table>
+<p>
+  <a href="/top">Topにもどる</a>
+</p>
+{% endblock %}
