@@ -1,21 +1,20 @@
-====
-atnd_notifier
-====
+h1. atnd_notifier
+
 キーワードでATNDのイベントを定期的に探してGmailでお知らせするアプリです。
-利用するにはGoogle Accountにログインする必要があります。
+Google Accountにログインする必要があります。
 見つかったイベントをあとでGoogle Calendarに登録することができます。
 Google AppEngine(Python）で動作します
 
-== 必要な設定 ==
+h2. 必要な設定
 トップディレクトリ下にsettings_ext.pyというファイルを作ります
 メール送信元の管理者のアドレスをADMIN_EMAILという名前で設定します
 例）
-----
+<pre>
 # -*- coding: utf-8 -*-
 ADMIN_EMAIL = 'atnd_notifier_admin@gmail.com'
-----
+</pre>
 
-== 利用しているライブラリ ==
+h2. 利用しているライブラリ
 * app-engine-patch
 http://code.google.com/p/app-engine-patch/
 
