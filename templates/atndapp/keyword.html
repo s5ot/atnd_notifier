@@ -1,12 +1,16 @@
 {% extends 'atndapp/top.html' %}
 {% block title %}ATND Notifier | Keyword{% endblock %}
 {% block contents %}
-<h1>Keyword</h1>
-  <form action="/keyword" method="post">
-  <p>キーワードを設定します</p>
-  {{ form.as_p }}
-  <input type="submit" name="button" value="登録する" /> | <a href="/top">Topにもどる</a>
-  </form>
+<div class="left">
+<form class="form" name="form" action="/keyword" method="post">
+<h2>キーワードを設定します</h2>
+<div>
+{{ form.as_p }}
+</div>
+<input class="button blue" type="submit" name="button" value="設定する" />
+<input type="button" class="button rosy" onClick="window.location.href='/top'" value="Topにもどる"/>
+</form>
+</div>
 
 {% endblock %}
 

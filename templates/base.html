@@ -8,25 +8,236 @@ Page title
 </title>
 
 <style type="text/css">
-<!--
-.contents{
-  width: 70%;
-        float: right;
-}
-.sidebar{
-   width: 25%;
-         float: right;
-}
--->
-</style>
+  * { padding: 0; margin: 0;}
 
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 90%;
+  }
+
+  #wrapper {
+    margin: 0 auto;
+    width: 922px;
+    padding-left: 0;
+  }
+
+  #faux {
+    margin-bottom: 10px;
+    overflow: auto;
+    width: 100%;
+  }
+
+  #leftcolumn {
+    display: inline;
+    margin: 10px;
+    padding: 0px;
+    width: 195px;
+    float: left;
+  }
+
+  #contents {
+    margin: 0 auto;
+    /*margin: 10px 13px;*/
+    padding: 0px;
+    display: inline;
+    position: relative;
+    text-align: center;
+    overflow: auto;
+  }
+
+  #rightcolumn {
+    display: inline;
+    position: relative;
+    margin: 10px 10px 10px 0px;
+    padding: 0px;
+    width: 195px;
+    float: right;
+  }
+
+  #header {
+    width: 902px;
+    height: 120px;
+    margin: 10px 0px 0px 0px;
+    border-bottom: 1px solid #222222;    
+  } 
+
+  #navigation {
+    padding: 10px;
+    margin: 0px 0px 5px 0px;
+  }
+
+  .clear { clear: both; background: none; }
+
+  div.login {
+    float: right;
+    position: obsolute;
+    bottom: 0;
+    padding-top: 90px;
+  }
+  
+  div.title {
+    float: left;
+    margin-left: 0;
+    padding-left: 0;
+  }
+
+  div.stop {
+    margin-top: 20px; 
+    float: right;
+  }
+
+  div.center {
+    text-align: center;
+  }
+
+  div.left {
+    text-align: left;
+  }
+
+  h1 { 
+    display:block;
+    width:491; /* タイトル部の横幅 */
+    height:110; /* タイトルの高さ */
+    background:url(/static/images/logo3.jpg);
+    background-repeat:no-repeat; /* リピートさせない場合 */
+    margin-left: 0;
+    padding-left: 0;
+  }
+
+  h1 span { display:none; }
+
+  ul {
+    margin-top: 10px;
+    margin-bottom: 30px;
+    list-style-type: none;
+  }
+
+  li {
+    line-height: 150%;
+  }
+
+  p {
+    margin: 0 auto;
+    display: inline-block;
+    text-align: center;
+    vertical-align: baseline;
+  }
+
+  .waku {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  /* 
+  http://www.webdesignerwall.com/demo/css-buttons.html
+  */
+  .blue {
+    background: -moz-linear-gradient(center top, #00ADEE, #0078A5) repeat scroll 0 0 transparent;
+    border: 1px solid #0076A3;
+    color: #D9EEF7;
+  }
+  
+  .blue:hover {
+    background: -moz-linear-gradient(center top, #0095CC, #00678E) repeat scroll 0 0 transparent;
+  }
+
+  .rosy  {
+    background:-moz-linear-gradient(center top , #F16C7C, #BF404F) repeat scroll 0 0 transparent;
+    border:1px solid #B73948;
+    color:#FAE7E9;
+  }
+
+  .rosy:hover {
+    background: -moz-linear-gradient(center top, #CF5D6A, #A53845) repeat scroll 0 0 transparent;
+  }
+
+  .button:hover {
+    text-decoration: none;
+  }
+
+  .button {
+    -moz-border-radius: 0.5em 0.5em 0.5em 0.5em;
+    -moz-box-shadow: 0 1px 2px rgda(0, 0, 0, 0.2);
+    cursor: pointer;
+    display: inline-block;
+    font: 14px/100% Arial, Helvetica, sans-serif;
+    margin-left: auto;
+    margin-right: auto;
+    outline: medium none;
+    padding: 0.5em 2em 0.55em;
+    text-align: center;
+    text-decoration: none;
+    text-shadow: 0 1px 1px rgda(0, 0, 0, 0.3);
+    vertical-align: baseline;
+  }
+
+  button {
+    text-indent: 0;
+    white-space: inherit;
+    -moz-appearance: button;
+    -moz-binding: none;
+    -moz-box-sizing: border-box;
+    -moz-user-select: none;
+    background-color: buttonface;
+    line-height: normal !important;
+    margin-top: 10px;
+  }
+
+  form * {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+  }
+
+  table {
+    margin-top: 10px;
+    border-collapse: collapse;
+  }
+
+  th, td {
+    border: 1px solid #222222;
+    padding: 3px 7px 2px 7px;
+  }
+
+  th {
+    font-size: 1.1.em;
+    text-align: left;
+    padding-top: 5px;
+    padding-bottom: 4px;
+  }    
+/*
+  .contents{
+    width: 70%;
+    float: right;
+    margin: 0 auto
+  }
+  .sidebar{
+    width: 25%;
+    float: right;
+  }
+*/
+</style>
 </head>
 <body>
-{% block header %}
-{% endblock %}
-
-{% block contents %}
-{% endblock %}
-
+  <div id="wrapper">
+    <div id="header">
+      {% block header %}
+      {% endblock %}
+    </div>
+    <div id="navigation">
+    </div>
+    <div id="faux">
+<!--
+      <div id="leftcolumn">
+      </div>
+-->
+      <div id="contents">
+        {% block contents %}
+        {% endblock %}
+      </div>
+      <div id="rightcolumn">
+      </div>
+    </div>
+  </div>
 </body>
 </html>

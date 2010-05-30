@@ -1,11 +1,17 @@
 {% extends 'base.html' %}
 {% block title %}ATND Notifier{% endblock %}
+{% block header %}
+<div class="title">
+  <h1><span>ATND Notifier</span></h1>
+</div>
+{% endblock %}
 {% block contents %}
-    <div id='container'>
-      <h1>ATND Notifier</h1>
-      <p>
-       キーワードにマッチする<a href="http://atnd.org/">ATND</a>のイベントをみつけてGMailでお知らせします
-      </p>
-      <a href='/top'>いますぐはじめる(Googleへログインします)</a>
+<div class="center">
+    <p>
+     キーワードにマッチした<a href="http://atnd.org/">ATND</a>のイベントをGmailでお知らせします
+    </p>
+    <div>
+    <button class="button blue" onClick="window.location.href='/top'">いますぐはじめる(Googleへログインします)</button>
     </div>
+</div>
 {% endblock %}

@@ -3,12 +3,15 @@
 {% block title %}ATND Notifier | Events{% endblock %}
 
 {% block header %}
-<p>Signed in as {{user.nickname}} | <a href="{{ logout_url }}">Sign out</a>
-<hr/>
+<div class="title">
+<h1><span>ATND Notifier</span></h1>
+</div>
+<div class="login">
+Signed in as {{user.nickname}} | <a href="{{ logout_url }}">Sign out</a>
+</div>
 {% endblock %}
 
 {% block contents %}
-<h1>Events</h1>
 <h2>キーワード『{{keyword}}』のイベント</h2>
 <table border="1">
   <tr>
@@ -36,7 +39,7 @@
   </tr>
 {% endfor %}
 </table>
-<p>
-<a href="/top">Topにもどる</a>
-</p>
+<div>
+  <button class="button rosy" onClick="window.location.href='/top'">Topにもどる</button>
+</div>
 {% endblock %}

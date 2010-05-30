@@ -1,12 +1,14 @@
 {% extends 'atndapp/top.html' %}
 {% block title %}ATND Notifier | Stop{% endblock %}
 {% block contents %}
-<h1>Stop</h1>
+<div class="left">
 <form action="/stop" method="post">
-  <p>本当に利用をやめますか？</p>
+  <h2>本当に利用をやめますか？</h2>
   {{ form.as_p }}
-  <input type="submit" name="unregister" value="やめる" /> | <a href="/top">Topにもどる</a>
+  <input class="button blue" type="submit" name="unregister" value="やめる" />
+  <input type="button" class="button rosy" onClick="window.location.href='/top'" value="Topにもどる"/>
 </form>
+</div>
 
 {% endblock %}
 

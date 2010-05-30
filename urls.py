@@ -14,6 +14,9 @@ urlpatterns = patterns('',
      (r'^google_calendar$', 'atndapp.views.google_calendar'),
      (r'^list$', 'atndapp.views.list'),
      (r'^cron_search$', 'atndapp.views.cron_search'),
+     (r'^site_media/(?P<path>.*)$', 'django.views.static.serve',
+      {'document_root': settings.STATIC_DOC_ROOT}),
+      
 
     # Example:
     # (r'^atndproject/', include('atndproject.foo.urls')),

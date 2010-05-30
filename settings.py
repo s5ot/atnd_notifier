@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 from ragendja.settings_pre import *
+
 # Django settings for atndproject project.
 import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (

@@ -3,19 +3,23 @@
 {% block title %}ATND Notifier | Top{% endblock %}
 
 {% block header %}
-<p>Signed in as {{user.nickname}} | <a href="{{ logout_url }}">Sign out</a>
-<hr/>
+<div class="title">
+<h1><span>ATND Notifier</span></h1>
+</div>
+
+<div class="login">
+Signed in as {{user.nickname}} | <a href="{{ logout_url }}">Sign out</a>
+</div>
 {% endblock %}
 
 {% block contents %}
-<h1>Top</h1>
 {% if not keyword %}
   <h2>
-  キーワードにマッチするイベントがみつかったらGmailでお知らせします
+  キーワードにマッチするイベントをGmailでお知らせします
   </h2>
-  <p>
-  <a href="/keyword">キーワードを設定する</a>
-  </p>
+  <div>
+    <button class="button blue" onClick="window.location.href='/keyword'">キーワードを設定する</button>
+  </div>
 {% else %}
   <h2>
     ウォッチ中のキーワード: {{ keyword.keyword }}
@@ -25,25 +29,27 @@
       <strong>{{ keyword.keyword }}</strong>にマッチするイベントがみつかったらGmailでお知らせします
     </li>
     <li>
-      <a href="/keyword">キーワードを変更する</a>
+      <button class="button blue" onClick="window.location.href='/keyword'">キーワードを変更する</button>
     </li>
   </ul>
-  <h3>これまでにみつかったイベント</h3>
+  </p>
+  <p>
+  <h2>これまでにみつかったイベント</h2>
   <ul>
     {% for k,v in keyword_event_cnt %}
-      <li>{{ k }} </li>
+      <li>{{ k }} :
       {% if v %}
-      <ul>
-        <li><a href="/events?keyword={{k}}">{{ v }}件</a></li>
-      </ul>
+        <a href="/events?keyword={{k}}">{{ v }}件</a></li>
       {% else %}
-      <ul>
-        <li>{{ v }}件</li>
-      </ul>
+        さがします...
       {% endif %}
     {% endfor %}
     </li>
   </ul>
+  </p>
+  <div style="border-top: 1px solid #222222">
+    <button class="button rosy" onClick="window.location.href='/stop'">利用をやめる</button>
+  </div>
 <!--
   <h2>いますぐイベントをさがす</h2>
   <ul>
@@ -62,10 +68,5 @@
 </li>
 </ul>
 -->
-<hr/>
-  <p>
-  <a href="/stop">利用をやめる</a>
-  </p>
 {% endif %}
-
 {% endblock %}
